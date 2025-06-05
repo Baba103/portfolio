@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Baba EL Moubarack – Portfolio CV</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0; padding: 0;
+    background-color: #f0f4ff;
+    color: #333;
+    scroll-behavior: smooth;
+  }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #d2dfff;
+    display: flex;
+    justify-content: space-between;
+    padding: 1em 2em;
+    align-items: center;
+    z-index: 10000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  nav a {
+    margin: 0 1em;
+    color: #333;
+    font-weight: 500;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s;
+  }
+  nav a:hover {
+    color: #f44336;
+  }
+  section {
+    padding: 6em 2em 4em;
+    min-height: 100vh;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  h2 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+    color: #1a1a40;
+  }
+  p.section-desc {
+    font-size: 1.1em;
+    max-width: 800px;
+    margin: 0 auto 2em;
+    line-height: 1.8em;
+    color: #444;
+    text-align: center;
+  }
+
+  .hero {
+    background: #c6d6ff;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .hero-text {
+    flex: 1;
+    max-width: 500px;
+  }
+  .hero-text h1 {
+    font-size: 3em;
+    margin-bottom: 0.3em;
+  }
+  .hero-text p {
+    font-size: 1.1em;
+    margin-bottom: 2em;
+  }
+  .hero-text .cta-button {
+    background-color: #f44336;
+    color: white;
+    padding: 0.8em 1.5em;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .hero-img {
+    flex: 1;
+    text-align: center;
+  }
+  .hero-img img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+  }
+  @media(max-width: 800px) {
+    .hero {
+      flex-direction: column;
+    }
+  }
+
+  /* Grid 2x2 for all sections except langue & associatif */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(150px, auto);
+    gap: 2em;
+    max-width: 840px;
+    margin: 0 auto;
+  }
+
+  /* Langues & associatif grid (2x2 no scroll) */
+  .cards-grid-single-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: minmax(120px, auto);
+    gap: 2em;
+    max-width: 840px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    padding: 1.5em;
+    border: 4px solid transparent;
+    transition: transform 0.3s, border-color 0.3s;
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    min-width: 280px;
+    position: relative;
+  }
+  .card:hover {
+    transform: scale(1.05);
+  }
+
+  /* Card expanded style */
+  .card.expanded {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 90vw;
+    max-width: 600px;
+    height: auto;
+    max-height: 80vh;
+    overflow-y: auto;
+    transform: translate(-50%, -50%) scale(1);
+    z-index: 11000;
+    cursor: default;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    padding: 2em;
+    flex-direction: column;
+  }
+  .card.expanded:hover {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .card.expanded h3 {
+    font-size: 2em;
+    margin-bottom: 1em;
+    text-align: center;
+  }
+  .card.expanded p {
+    font-size: 1.1em;
+    color: #333;
+  }
+  .close-btn {
+    position: absolute;
+    top: 10px; right: 15px;
+    background: #f44336;
+    color: white;
+    border: none;
+    font-size: 1.5em;
+    border-radius: 50%;
+    width: 35px; height: 35px;
+    cursor: pointer;
+  }
+
+  /* Section border colors */
+  #formation .card {
+    border-color: #5b6bf8;
+  }
+  #experience .card {
+    border-color: #5b6bf8;
+  }
+  #competences .card {
+    border-color: #f39c12;
+  }
+  #langues .card {
+    border-color: #27ae60;
+  }
+  #associatif .card {
+    border-color: #e74c3c;
+  }
+
+  .card h3 {
+    margin: 0 0 0.5em;
+    font-size: 1.2em;
+    color: #222;
+  }
+  .card p {
+    font-size: 0.95em;
+    color: #555;
+    margin: 0.2em 0;
+  }
+  .competence-icon {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    fill: currentColor;
+    color: #f39c12;
+  }
+  .competence-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  /* Retour en haut */
+  #backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #5b6bf8;
+    color: white;
+    border: none;
+    padding: 0.8em 1em;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(91,107,248,0.6);
+    display: none;
+    z-index: 1100;
+    transition: background-color 0.3s ease;
+  }
+  #backToTop:hover {
+    background-color: #3f4fcf;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div><strong>B. Moubarack</strong></div>
+  <div>
+    <a href="#home">Accueil</a>
+    <a href="#profil">Profil</a>
+    <a href="#formation">Formation</a>
+    <a href="#experience">Expérience</a>
+    <a href="#competences">Compétences</a>
+    <a href="#langues">Langues</a>
+    <a href="#associatif">Implication Associative</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<div id="page-container">
+
+  <section class="hero" id="home" style="scroll-snap-align: start;">
+    <div class="hero-text">
+      <h1>Construisons l'avenir</h1>
+      <p>Bienvenue dans le monde professionnel de <strong>Baba EL Moubarack</strong>, élève ingénieur en Data Science passionné par les données, l'innovation et les projets à fort impact.</p>
+      <a href="#contact" class="cta-button">Contacte-moi</a>
+    </div>
+    <div class="hero-img">
+      <img src="image baba.jpg" alt="Photo de Baba EL Moubarack" />
+    </div>
+  </section>
+
+  <section id="profil" class="about-section" style="scroll-snap-align: start;">
+    <h2>À propos de moi</h2>
+    <p class="section-desc">Actuellement élève ingénieur en Data Science à l’École Supérieure Polytechnique, je suis passionné par l’analyse, la modélisation et la visualisation de données. Mon parcours m’a permis de maîtriser les langages R et Python, ainsi que des outils modernes comme Docker, Git ou MongoDB. J’aime travailler sur des projets réels, collaborer avec des équipes pluridisciplinaires et innover dans le domaine de l’intelligence artificielle appliquée. Je suis curieux, rigoureux, et motivé par les défis technologiques et humains.</p>
+  </section>
+
+  <section id="formation" style="scroll-snap-align: start;">
+    <h2>Formation</h2>
+    <div class="cards-grid">
+      <div class="card">
+        <div>
+          <h3>Diplôme d’Ingénieur</h3>
+          <p>Statistique & Ingénierie des Données, École Supérieure Polytechnique</p>
+          <p><em>2023 - présent</em></p>
+        </div>
+      </div>
+      <div class="card">
+        <div>
+          <h3>Classes Préparatoires aux Grandes Écoles</h3>
+          <p>IPGEI</p>
+          <p><em>2020 - 2023</em></p>
+        </div>
+      </div>
+      <div class="card">
+        <div>
+          <h3>DELF B2</h3>
+          <p>Institut Français</p>
+          <p><em>Mars 2023</em></p>
+        </div>
+      </div>
+      <div class="card">
+        <div>
+          <h3>Baccalauréat</h3>
+          <p>Mathématiques, Lycée National</p>
+          <p><em>2020</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience" class="experience-section" style="background:#c6d6ff; scroll-snap-align: start;">
+    <h2>Expérience</h2>
+    <div class="cards-grid" style="max-width: 840px; margin: 0 auto;">
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <div>
+          <h3>Stage</h3>
+          <p>Ministère de l’Économie et des Finances</p>
+          <p><em>Oct. 2024 - présent</em></p>
+          <p>Développement d’un système intégré de centralisation, d’automatisation et de visualisation des données économiques à la DPAE.</p>
+        </div>
+      </div>
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <div>
+          <h3>Organisation Mini-Challenge & Datathon</h3>
+          <p>ESP Data Club (Trésorier)</p>
+          <p><em>Août 2024</em></p>
+          <p>Premier événement national de data science en Mauritanie.</p>
+        </div>
+      </div>
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <div>
+          <h3>Stage</h3>
+          <p>ANSADE</p>
+          <p><em>Juil. – Août 2024</em></p>
+          <p>Participation à la collecte, au nettoyage et à l’analyse de données statistiques nationales.</p>
+        </div>
+      </div>
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <div>
+          <h3>Projet PEI</h3>
+          <p>École Supérieure Polytechnique</p>
+          <p><em>Oct. 2023 – Juin 2024</em></p>
+          <p>Développement d’un prototype intelligent pour la collecte de données agricoles et la prédiction de cultures adaptées.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="competences" style="scroll-snap-align: start;">
+    <h2>Compétences</h2>
+    <div class="cards-grid" style="max-width: 840px; margin: 0 auto;">
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <svg class="competence-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="6" x2="12" y2="12"></line>
+          <line x1="12" y1="12" x2="16" y2="14"></line>
+        </svg>
+        <div class="competence-text">
+          <h3>Langages</h3>
+          <p>R, Python, Scala</p>
+        </div>
+      </div>
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <svg class="competence-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+          <path d="M16 3h-8a2 2 0 0 0-2 2v4h12V5a2 2 0 0 0-2-2z"></path>
+        </svg>
+        <div class="competence-text">
+          <h3>Frameworks</h3>
+          <p>Django, Flask</p>
+        </div>
+      </div>
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <svg class="competence-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7v4a1 1 0 001 1h3m10-5v4a1 1 0 01-1 1h-3m-8 4h12a1 1 0 001-1v-4a1 1 0 00-1-1H4a1 1 0 00-1 1v4a1 1 0 001 1z"></path>
+        </svg>
+        <div class="competence-text">
+          <h3>Bases de données</h3>
+          <p>SQL, MongoDB</p>
+        </div>
+      </div>
+      <div class="card" tabindex="0">
+        <button class="close-btn" title="Fermer" style="display:none;">×</button>
+        <svg class="competence-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20h9"></path>
+          <path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4 12.5-12.5z"></path>
+        </svg>
+        <div class="competence-text">
+          <h3>Outils</h3>
+          <p>Microsoft Office, Arduino, KoboToolbox, Docker, Git, GitHub, LaTeX</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="langues" style="scroll-snap-align: start;">
+    <h2>Langues</h2>
+    <div class="cards-grid-single-row" style="max-width: 840px; margin: 0 auto;">
+      <div class="card" style="min-width: 280px;">
+        <h3>Français</h3>
+        <p>Niveau B2</p>
+      </div>
+      <div class="card" style="min-width: 280px;">
+        <h3>Anglais</h3>
+        <p>Niveau B1</p>
+      </div>
+      <div class="card" style="min-width: 280px;">
+        <h3>Arabe</h3>
+        <p>Langue maternelle</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="associatif" style="scroll-snap-align: start;">
+    <h2>Implication Associative</h2>
+    <div class="cards-grid-single-row" style="max-width: 840px; margin: 0 auto;">
+      <div class="card" style="min-width: 280px;">
+        <h3>Trésorier</h3>
+        <p>ESP Data Club</p>
+        <p><em>Depuis octobre 2024</em></p>
+      </div>
+      <div class="card" style="min-width: 280px;">
+        <h3>Responsable information</h3>
+        <p>Association Mauritanienne des Hémophiles</p>
+        <p><em>2021 - 2023</em></p>
+      </div>
+      <div class="card" style="min-width: 280px;">
+        <h3>Co-fondateur</h3>
+        <p>Club Bonyan</p>
+        <p><em>Depuis 2025</em></p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="background:#f5f7ff; padding:4em 2em; text-align:center;">
+    <h2>Contact</h2>
+    <p class="section-desc">Tu souhaites me contacter ? Voici mes coordonnées :</p>
+    <p>📧 <a href="mailto:23103@esp.mr">23103@esp.mr</a></p>
+    <p>📞 <a href="tel:+22241001056">+222 41 00 10 56</a></p>
+    <p>
+      🔗 <a href="https://www.linkedin.com/in/baba-moubarack-469a75302" target="_blank" rel="noopener">LinkedIn</a> | 
+      <a href="https://www.facebook.com/espdataclub" target="_blank" rel="noopener">ESP Data Club</a> | 
+      <a href="https://www.facebook.com/HEMOPHILIEMR" target="_blank" rel="noopener">Hémophilie MR</a>
+    </p>
+  </section>
+
+  <button id="backToTop" title="Retour en haut">↑</button>
+
+<script>
+  const backToTopButton = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) backToTopButton.style.display = 'block';
+    else backToTopButton.style.display = 'none';
+  });
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Smooth scroll nav links
+  document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById(anchor.getAttribute('href').slice(1))
+        .scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // Expand card logic (for experience and competences)
+  function collapseAll(cards) {
+    cards.forEach(card => {
+      card.classList.remove('expanded');
+      card.querySelector('.close-btn').style.display = 'none';
+      card.style.zIndex = '';
+    });
+  }
+
+  document.querySelectorAll('#experience .card, #competences .card').forEach(card => {
+    // Add close button
+    let btn = document.createElement('button');
+    btn.className = 'close-btn';
+    btn.textContent = '×';
+    btn.title = 'Fermer';
+    btn.style.display = 'none';
+    card.insertBefore(btn, card.firstChild);
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      collapseAll(document.querySelectorAll('#experience .card, #competences .card'));
+    });
+
+    card.addEventListener('click', () => {
+      const allCards = document.querySelectorAll('#experience .card, #competences .card');
+      const isExpanded = card.classList.contains('expanded');
+      collapseAll(allCards);
+      if (!isExpanded) {
+        card.classList.add('expanded');
+        card.querySelector('.close-btn').style.display = 'block';
+        card.style.zIndex = '11000';
+      }
+    });
+  });
+
+</script>
+</body>
+</html>
